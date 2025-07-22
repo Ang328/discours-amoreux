@@ -1,26 +1,128 @@
+/* Import pixel fonts first */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --retro-primary: #00ff41;
+  --retro-secondary: #ff0080;
+  --retro-bg-dark: #0a0a0a;
+  --retro-bg-light: #1a1a1a;
+  --retro-text: #00ff41;
+  --retro-accent: #ff0080;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--retro-bg-dark);
+  --color-foreground: var(--retro-text);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Pixel art crisp rendering */
+* {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--retro-bg-dark);
+  color: var(--retro-text);
+  font-family: 'VT323', monospace;
+}
+
+/* Custom pixel art classes */
+.pixel-font {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.pixel-font-large {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 16px;
+  letter-spacing: 3px;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.pixel-font-xl {
+  font-family: 'VT323', monospace;
+  font-size: 32px;
+  letter-spacing: 4px;
+  line-height: 1.2;
+}
+
+/* Retro button styling */
+.retro-button {
+  border: 3px solid var(--retro-primary);
+  background: var(--retro-bg-dark);
+  color: var(--retro-primary);
+  transition: all 0.1s ease;
+  text-transform: uppercase;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.retro-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px 0px var(--retro-primary);
+  background: var(--retro-primary);
+  color: var(--retro-bg-dark);
+}
+
+.retro-button:active {
+  transform: translate(0px, 0px);
+  box-shadow: 2px 2px 0px 0px var(--retro-primary);
+}
+
+.retro-button-secondary {
+  border: 3px solid var(--retro-secondary);
+  color: var(--retro-secondary);
+}
+
+.retro-button-secondary:hover {
+  box-shadow: 4px 4px 0px 0px var(--retro-secondary);
+  background: var(--retro-secondary);
+  color: var(--retro-bg-dark);
+}
+
+/* Scan lines effect */
+.scan-lines::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 255, 65, 0.03) 50%,
+    rgba(0, 255, 65, 0.05) 51%,
+    transparent 52%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Retro glow effect */
+.retro-glow {
+  text-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 15px currentColor;
+}
+
+/* Rotating message animation */
+@keyframes fadeInOut {
+  0%, 20% { opacity: 1; transform: translateY(0px); }
+  25%, 75% { opacity: 0; transform: translateY(-20px); }
+  80%, 100% { opacity: 1; transform: translateY(0px); }
+}
+
+.rotating-message {
+  animation: fadeInOut 4s ease-in-out infinite;
 }
