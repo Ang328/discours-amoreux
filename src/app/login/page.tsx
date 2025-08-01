@@ -27,54 +27,63 @@ export default function Login() {
       setError('Invalid email or password')
       setLoading(false)
     } else {
-      router.push('/messages')
+      router.push('/')
     }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-rose-100">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-playfair text-rose-800 mb-2">
-              Bienvenue
+        <div className="bg-black/20 backdrop-blur-xl border border-stone-400/30 p-10">
+          <div className="text-center mb-10">
+            <h1 className="elegant-title mb-4" style={{ fontSize: '2.5rem' }}>
+              Welcome
             </h1>
-            <p className="text-rose-600 font-inter">
-              Enter your heart's correspondence
+            <p className="elegant-subtitle">
+              Return to your correspondence
             </p>
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-rose-300 to-transparent mx-auto mt-4"></div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-8">
             <div>
-              <label className="block text-sm font-medium text-rose-700 mb-2">
-                Email
+              <label className="block elegant-small mb-3">
+                Email Address
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-rose-200 focus:ring-2 focus:ring-rose-300 focus:border-transparent bg-white/80 text-rose-900 placeholder-rose-400"
-                placeholder="mon.amour@example.com"
+                className="w-full px-4 py-4 bg-black/10 border-2 border-stone-400/30 focus:border-rose-300 text-stone-100 placeholder-stone-400 backdrop-blur-sm transition-all duration-300 elegant-body"
+                style={{ 
+                  backgroundColor: 'rgba(26, 58, 43, 0.1)',
+                  fontFamily: 'Optima, sans-serif'
+                }}
+                placeholder="your.email@example.com"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-rose-700 mb-2">
+              <label className="block elegant-small mb-3">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-rose-200 focus:ring-2 focus:ring-rose-300 focus:border-transparent bg-white/80 text-rose-900 placeholder-rose-400"
+                className="w-full px-4 py-4 bg-black/10 border-2 border-stone-400/30 focus:border-rose-300 text-stone-100 placeholder-stone-400 backdrop-blur-sm transition-all duration-300 elegant-body"
+                style={{ 
+                  backgroundColor: 'rgba(26, 58, 43, 0.1)',
+                  fontFamily: 'Optima, sans-serif'
+                }}
                 placeholder="••••••••"
                 required
               />
             </div>
 
             {error && (
-              <div className="text-red-600 text-sm text-center bg-red-50 p-3 rounded-lg">
+              <div className="text-rose-300 text-center bg-rose-900/20 p-4 border border-rose-300/30 elegant-small">
                 {error}
               </div>
             )}
@@ -82,17 +91,18 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="w-full elegant-button elegant-shimmer"
+              style={{ padding: '1rem 2rem' }}
             >
-              {loading ? 'Signing in...' : 'Se connecter'}
+              {loading ? 'Signing in...' : 'Enter'}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-rose-600">
-              Don't have an account?{' '}
-              <Link href="/register" className="text-rose-800 hover:text-rose-900 font-medium underline">
-                Create one
+          <div className="mt-8 text-center">
+            <p className="elegant-small">
+              New to correspondence?{' '}
+              <Link href="/register" className="text-rose-300 hover:text-rose-200 underline transition-colors">
+                Begin here
               </Link>
             </p>
           </div>

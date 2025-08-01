@@ -1,9 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+
+interface Partner {
+  id: string
+  name: string
+  email: string
+}
 
 export default function WriteLetter() {
   const { data: session, status } = useSession()
@@ -12,6 +18,25 @@ export default function WriteLetter() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [partner, setPartner] = useState<Partner | null>(null)
+
+  useEffect(() => {
+    if (session) {
+      fetchPartner()
+    }
+  }, [session])
+
+  const fetchPartner = async () => {
+    try {
+      const res = await fetch('/api/user/partner')
+      if (res.ok) {
+        const data = await res.json()
+        setPartner(data.partner)
+      }
+    } catch (error) {
+      console.error('Failed to fetch partner:', error)
+    }
+  }
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,7 +77,7 @@ export default function WriteLetter() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-rose-600 text-lg font-playfair">Loading...</div>
+        <div className="elegant-body">Loading...</div>
       </div>
     )
   }
@@ -66,14 +91,16 @@ export default function WriteLetter() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <div className="text-6xl mb-6">💌</div>
-          <h1 className="text-3xl font-playfair text-rose-800 mb-4">
-            Letter Sent!
+          <div className="w-16 h-16 mx-auto mb-6 border border-stone-400/30 flex items-center justify-center">
+            <div className="w-8 h-8 border border-stone-400/50"></div>
+          </div>
+          <h1 className="elegant-title mb-4" style={{ fontSize: '2.5rem' }}>
+            Letter Sent
           </h1>
-          <p className="text-rose-600 font-inter mb-4">
+          <p className="elegant-body mb-4">
             Your words of love are on their way...
           </p>
-          <p className="text-sm text-rose-500 font-inter">
+          <p className="elegant-small">
             Returning to main page in a moment
           </p>
         </div>
@@ -83,73 +110,78 @@ export default function WriteLetter() {
 
   return (
     <div className="min-h-screen p-4">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block mb-4 text-rose-600 hover:text-rose-800 transition-colors">
-            ← Back to main
+        <div className="text-center mb-12">
+          <Link href="/" className="inline-block mb-6 elegant-small text-stone-300 hover:text-rose-300 transition-colors">
+            ← Return to main
           </Link>
-          <h1 className="text-4xl font-playfair text-rose-800 mb-2">
+          <h1 className="elegant-title mb-4">
             Write a Letter
           </h1>
-          <p className="text-rose-600 font-inter">
+          <p className="elegant-subtitle">
             Pour your heart into words that will travel across distance
           </p>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-rose-300 to-transparent mx-auto mt-6"></div>
         </div>
 
         {/* Writing Form */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-rose-100">
-          <form onSubmit={sendMessage} className="space-y-6">
+        <div className="bg-black/20 backdrop-blur-xl border border-stone-400/30 p-10">
+          <form onSubmit={sendMessage} className="space-y-8">
             <div>
-              <label className="block text-lg font-playfair text-rose-800 mb-4">
-                Dear {session?.user?.name}'s beloved,
+              <label className="block elegant-body mb-4">
+                Dear {partner?.name || 'my beloved'},
               </label>
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Write from your heart... Share your thoughts, dreams, daily moments, or simply how much they mean to you. This letter will arrive in 5 seconds, making the anticipation all the more special."
-                className="w-full h-64 px-6 py-4 rounded-xl border-2 border-rose-200 focus:ring-4 focus:ring-rose-100 focus:border-rose-400 bg-white/90 text-rose-900 placeholder-rose-400 resize-none font-inter text-lg leading-relaxed"
+                placeholder="Write from your heart... Share your thoughts, dreams, daily moments, or simply how much they mean to you. This letter will arrive in 15 seconds, making the anticipation all the more special."
+                className="w-full h-80 px-6 py-4 bg-black/10 border-2 border-stone-400/30 focus:border-rose-300 text-stone-100 placeholder-stone-400 backdrop-blur-sm transition-all duration-300 elegant-body resize-none"
+                style={{ 
+                  backgroundColor: 'rgba(26, 58, 43, 0.1)',
+                  fontFamily: 'Optima, sans-serif'
+                }}
                 required
               />
-              <div className="flex justify-between items-center mt-2">
-                <span className="text-sm text-rose-500 font-inter">
+              <div className="flex justify-between items-center mt-3">
+                <span className="elegant-small">
                   {message.length} characters
                 </span>
-                <span className="text-sm text-rose-500 font-inter">
-                  Encourage longer, thoughtful messages 💭
+                <span className="elegant-small">
+                  Encourage longer, thoughtful messages
                 </span>
               </div>
             </div>
 
             {error && (
-              <div className="text-red-600 text-sm bg-red-50 p-4 rounded-lg border border-red-200">
+              <div className="text-rose-300 text-center bg-rose-900/20 p-4 border border-rose-300/30 elegant-small">
                 {error}
               </div>
             )}
 
             <div className="flex justify-between items-center">
-              <p className="text-rose-600 font-inter">
-                ⏰ This letter will arrive in 5 seconds
+              <p className="elegant-small text-stone-400">
+                This letter will arrive in 15 seconds
               </p>
               <button
                 type="submit"
                 disabled={loading || !message.trim()}
-                className="bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg font-inter"
+                className="elegant-button elegant-shimmer"
               >
-                {loading ? 'Sending with love...' : 'Send Letter 💕'}
+                {loading ? 'Sending with love...' : 'Send Letter'}
               </button>
             </div>
           </form>
         </div>
 
         {/* Inspiration */}
-        <div className="mt-8 text-center">
-          <p className="text-rose-500 font-inter italic">
-            "The real lover is the man who can thrill you by kissing your forehead<br />
-            or smiling into your eyes or just staring into space."
-            <br />
-            <span className="text-sm">— Marilyn Monroe</span>
-          </p>
+        <div className="mt-12 text-center max-w-2xl mx-auto">
+          <blockquote className="elegant-body text-center" style={{ fontSize: '1.2rem', fontStyle: 'italic' }}>
+            "The real lover is the man who can thrill you by kissing your forehead or smiling into your eyes or just staring into space."
+          </blockquote>
+          <cite className="elegant-small block mt-4">
+            — Marilyn Monroe
+          </cite>
         </div>
       </div>
     </div>

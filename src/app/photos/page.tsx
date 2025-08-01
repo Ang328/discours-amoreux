@@ -126,23 +126,24 @@ export default function SharePhoto() {
 
   return (
     <div className="min-h-screen p-4">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block mb-4 text-rose-600 hover:text-rose-800 transition-colors">
-            ← Back to main
+        <div className="text-center mb-12">
+          <Link href="/" className="inline-block mb-6 elegant-small text-stone-300 hover:text-rose-300 transition-colors">
+            ← Return to main
           </Link>
-          <h1 className="text-4xl font-playfair text-rose-800 mb-2">
+          <h1 className="elegant-title mb-4">
             Share a Memory
           </h1>
-          <p className="text-rose-600 font-inter">
-            Send a photograph to bridge the distance between your hearts
+          <p className="elegant-subtitle">
+            Send a photograph to bridge the distance between hearts
           </p>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-rose-300 to-transparent mx-auto mt-6"></div>
         </div>
 
         {/* Photo Upload Form */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-rose-100">
-          <form onSubmit={sendPhoto} className="space-y-6">
+        <div className="bg-black/20 backdrop-blur-xl border border-stone-400/30 p-10">
+          <form onSubmit={sendPhoto} className="space-y-8">
             <div className="text-center">
               {/* File Input */}
               <div className="relative">
@@ -155,7 +156,8 @@ export default function SharePhoto() {
                 />
                 <label
                   htmlFor="photo-upload"
-                  className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-rose-300 rounded-xl bg-rose-50/50 hover:bg-rose-50 transition-colors cursor-pointer"
+                  className="flex flex-col items-center justify-center w-full h-80 border-2 border-dashed border-stone-400/50 hover:border-rose-300/70 bg-black/10 hover:bg-rose-900/10 transition-all duration-300 cursor-pointer group"
+                  style={{ backgroundColor: 'rgba(45, 74, 62, 0.05)' }}
                 >
                   {imagePreview ? (
                     <div className="relative w-full h-full">
@@ -163,56 +165,57 @@ export default function SharePhoto() {
                         src={imagePreview}
                         alt="Preview"
                         fill
-                        className="object-cover rounded-xl"
+                        className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-black/20 rounded-xl flex items-center justify-center">
-                        <p className="text-white font-inter bg-black/50 px-4 py-2 rounded-lg">
-                          Click to change photo
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 flex items-center justify-center transition-all duration-300">
+                        <p className="elegant-body text-stone-100 bg-black/60 px-6 py-3 backdrop-blur-sm">
+                          Click to change photograph
                         </p>
                       </div>
                     </div>
                   ) : (
-                    <>
-                      <div className="text-6xl text-rose-400 mb-4">📸</div>
-                      <p className="text-rose-600 font-inter text-lg mb-2">
-                        Click to select a photo
+                    <div className="text-center group-hover:scale-105 transition-transform duration-300">
+                      <div className="w-16 h-16 mx-auto mb-6 border border-stone-400/30 flex items-center justify-center">
+                        <div className="w-8 h-8 border border-stone-400/50"></div>
+                      </div>
+                      <p className="elegant-body text-stone-200 mb-3">
+                        Select a photograph
                       </p>
-                      <p className="text-rose-500 font-inter text-sm">
+                      <p className="elegant-small text-stone-400">
                         Share a moment, a smile, or a view from your world
                       </p>
-                    </>
+                    </div>
                   )}
                 </label>
               </div>
             </div>
 
             {error && (
-              <div className="text-red-600 text-sm bg-red-50 p-4 rounded-lg border border-red-200">
+              <div className="text-rose-300 text-center bg-rose-900/20 p-4 border border-rose-300/30 elegant-small">
                 {error}
               </div>
             )}
 
             <div className="flex justify-between items-center">
-              <p className="text-rose-600 font-inter">
-                ⏰ This photo will arrive in 5 seconds
+              <p className="elegant-small text-stone-400">
+                This photograph will arrive in 5 seconds
               </p>
               <button
                 type="submit"
                 disabled={loading || !selectedImage}
-                className="bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg font-inter"
+                className="elegant-button elegant-button-secondary elegant-shimmer"
               >
-                {loading ? 'Sending memory...' : 'Send Photo 📸'}
+                {loading ? 'Sending memory...' : 'Send Photograph'}
               </button>
             </div>
           </form>
         </div>
 
         {/* Inspiration */}
-        <div className="mt-8 text-center">
-          <p className="text-rose-500 font-inter italic">
-            "A picture is worth a thousand words,<br />
-            but a memory shared is worth a thousand pictures."
-          </p>
+        <div className="mt-12 text-center max-w-2xl mx-auto">
+          <blockquote className="elegant-body text-center" style={{ fontSize: '1.2rem', fontStyle: 'italic' }}>
+            "A picture is worth a thousand words, but a memory shared is worth a thousand pictures."
+          </blockquote>
         </div>
       </div>
     </div>

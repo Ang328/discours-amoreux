@@ -4,9 +4,9 @@ import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, password } = await request.json()
+    const { name, email, password, location } = await request.json()
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !location) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -31,6 +31,11 @@ export async function POST(request: NextRequest) {
         name,
         email,
         password: hashedPassword,
+        city: location.city,
+        country: location.country,
+        timezone: location.timezone,
+        latitude: location.latitude,
+        longitude: location.longitude,
       }
     })
 

@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     }
 
     const now = new Date()
-    const scheduledAt = new Date(now.getTime() + 5 * 1000) // 5 seconds delay (temporary for testing)
+    const scheduledAt = new Date(now.getTime() + 15 * 1000) // 15 seconds delay for testing countdown
 
     const message = await prisma.message.create({
       data: {
@@ -92,6 +92,7 @@ export async function GET(request: NextRequest) {
 
     const now = new Date()
     
+    // Only get messages that are scheduled for now or earlier AND should be delivered
     const deliveredMessages = await prisma.message.findMany({
       where: {
         OR: [
@@ -100,7 +101,8 @@ export async function GET(request: NextRequest) {
         ],
         scheduledAt: {
           lte: now
-        }
+        },
+        isDelivered: true // Only return messages that are already marked as delivered
       },
       include: {
         sender: {
@@ -123,22 +125,8 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    await prisma.message.updateMany({
-      where: {
-        OR: [
-          { senderId: user.id },
-          { receiverId: user.id }
-        ],
-        scheduledAt: {
-          lte: now
-        },
-        isDelivered: false
-      },
-      data: {
-        isDelivered: true,
-        deliveredAt: now
-      }
-    })
+    // Don't automatically mark messages as delivered here
+    // This should only happen when the user explicitly unlocks/views them
 
     return NextResponse.json({ messages: deliveredMessages })
   } catch (error) {
